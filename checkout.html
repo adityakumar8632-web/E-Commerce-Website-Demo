@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Premium Smart Home</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            contain: layout;
+            background: rgba(253, 253, 253, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(123, 63, 191, 0.1);
+            padding: 1rem clamp(1rem, 4vw, 2rem);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(123, 63, 191, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            color: var(--color-text);
+        }
+
+        .cart-icon:hover {
+            color: var(--color-primary);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Page Title */
+        .page-title {
+            max-width: 1400px;
+            margin: 3rem auto 1rem;
+            padding: 0 clamp(1rem, 4vw, 2rem);
+        }
+
+        .page-title h1 {
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Main Checkout Container */
+        .checkout-container {
+            max-width: 1400px;
+            margin: 2rem auto 4rem;
+            padding: 0 clamp(1rem, 4vw, 2rem);
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        /* Form Section */
+        .checkout-form {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            min-height: 48px; 
+            border: 2px solid rgba(123, 63, 191, 0.15);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--color-card-bg);
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(123, 63, 191, 0.1);
+            transform: translateY(-1px);
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.125rem 1rem;
+            min-height: 56px;
+            border: 2px solid rgba(123, 63, 191, 0.15);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--color-card-bg);
+        }
+
+        .payment-option:hover:not(:has(input:checked)) {
+            border-color: rgba(123, 63, 191, 0.4);
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(123, 63, 191, 0.12);
+        }
+
+        .payment-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .payment-icon {
+            color: var(--color-primary);
+        }
+
+        .payment-label {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .card-details {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--color-card-bg);
+            border-radius: 12px;
+        }
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(123, 63, 191, 0.05);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            contain: layout;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .product-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(123, 63, 191, 0.1);
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            object-fit: cover;
+            background: var(--color-card-bg);
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--color-text);
+        }
+
+        .product-quantity {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .coupon-section {
+            margin: 1.5rem 0;
+            padding: 1.5rem 0;
+            border-top: 1px solid rgba(123, 63, 191, 0.1);
+            border-bottom: 1px solid rgba(123, 63, 191, 0.1);
+        }
+
+        .coupon-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .coupon-input input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(123, 63, 191, 0.15);
+            border-radius: 12px;
+            font-size: 0.95rem;
+        }
+
+        .apply-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--color-secondary);
+            color: var(--color-accent);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .apply-btn:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .price-breakdown {
+            margin: 1.5rem 0;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .price-row.total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            padding-top: 1rem;
+            border-top: 2px solid rgba(123, 63, 191, 0.2);
+            margin-top: 1rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1.125rem 1rem;
+            min-height: 52px; 
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 16px rgba(123, 63, 191, 0.3);
+        }
+
+        .checkout-btn:hover {
+            will-change: transform;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 24px rgba(123, 63, 191, 0.4);
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 16px;
+        }
+
+        .empty-state-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            color: var(--color-secondary);
+        }
+
+        .empty-state h2 {
+            font-size: 2rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .browse-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .browse-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(123, 63, 191, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--color-secondary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-secondary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-icon:hover {
+            color: var(--color-secondary);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-links a,
+        .cart-icon {
+            transition: color 0.3s ease;
+            will-change: color; /* Hint for GPU acceleration */
+        }
+
+        .checkout-btn:disabled,
+        .apply-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .checkout-btn:disabled:hover,
+        .apply-btn:disabled:hover {
+            transform: none;
+            box-shadow: 0 4px 16px rgba(123, 63, 191, 0.3);
+        }
+
+        .payment-option:has(input:checked) {
+            border-color: var(--color-primary);
+            background: rgba(123, 63, 191, 0.05);
+            box-shadow: 0 2px 12px rgba(123, 63, 191, 0.15);
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkout-form,
+        .summary-card,
+        .empty-state {
+            box-shadow: 0 2px 16px rgba(123, 63, 191, 0.06),
+                        0 8px 32px rgba(123, 63, 191, 0.04);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(123, 63, 191, 0.1);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-form,
+            .summary-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">SmartHome</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="plp.html">Products</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <div class="cart-icon" onclick="window.location.href='cart.html'" role="button" aria-label="Shopping cart with 3 items" tabindex="0">
+                    <i data-lucide="shopping-cart" width="24" height="24"></i>
+                    <span class="cart-badge">3</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <section class="page-title">
+        <h1>Checkout</h1>
+        <p>Confirm your order and payment details</p>
+    </section>
+
+    <!-- Checkout Container -->
+    <div class="checkout-container">
+        <!-- Left Column: Form -->
+        <div class="checkout-form">
+            <!-- Shipping Information -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <i data-lucide="truck" width="24" height="24"></i>
+                    Shipping Information
+                </h2>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon" data-lucide="user" width="20" height="20"></i>
+                        <input type="text" class="form-input" placeholder="John Doe">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon" data-lucide="mail" width="20" height="20"></i>
+                        <input type="email" class="form-input" placeholder="john@example.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon" data-lucide="phone" width="20" height="20"></i>
+                        <input type="tel" class="form-input" placeholder="+1 (555) 000-0000">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon" data-lucide="map-pin" width="20" height="20"></i>
+                        <input type="text" class="form-input" placeholder="123 Main Street">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="building" width="20" height="20"></i>
+                            <input type="text" class="form-input" placeholder="New York">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>State</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="map" width="20" height="20"></i>
+                            <input type="text" class="form-input" placeholder="NY">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ZIP Code</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="hash" width="20" height="20"></i>
+                            <input type="text" class="form-input" placeholder="10001">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="globe" width="20" height="20"></i>
+                            <input type="text" class="form-input" placeholder="United States">
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="billing-same">
+                    <label for="billing-same">Billing address same as shipping</label>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <i data-lucide="credit-card" width="24" height="24"></i>
+                    Payment Method
+                </h2>
+                <div class="payment-methods">
+                    <label class="payment-option">
+                        <input type="radio" name="payment" checked>
+                        <i class="payment-icon" data-lucide="credit-card" width="24" height="24"></i>
+                        <span class="payment-label">Credit Card</span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment">
+                        <i class="payment-icon" data-lucide="wallet" width="24" height="24"></i>
+                        <span class="payment-label">PayPal</span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment">
+                        <i class="payment-icon" data-lucide="smartphone" width="24" height="24"></i>
+                        <span class="payment-label">Apple Pay</span>
+                    </label>
+                </div>
+
+                <div class="card-details">
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="credit-card" width="20" height="20"></i>
+                            <input type="text" class="form-input" placeholder="1234 5678 9012 3456">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <div class="input-wrapper">
+                                <i class="input-icon" data-lucide="calendar" width="20" height="20"></i>
+                                <input type="text" class="form-input" placeholder="MM/YY">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <div class="input-wrapper">
+                                <i class="input-icon" data-lucide="lock" width="20" height="20"></i>
+                                <input type="text" class="form-input" placeholder="123">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-note">
+                    <i data-lucide="shield-check" width="20" height="20"></i>
+                    <span>Your payment information is secure and encrypted</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Order Summary -->
+        <div class="order-summary">
+            <div class="summary-card">
+                <h2 class="summary-title">Order Summary</h2>
+                
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1558089687-bf1b8f1fc57d?w=200" alt="Smart Speaker" class="product-image">
+                    <div class="product-details">
+                        <div class="product-name">Smart Speaker Pro</div>
+                        <div class="product-quantity">Qty: 1</div>
+                        <div class="product-price">$299.00</div>
+                    </div>
+                </div>
+
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=200" alt="Smart Bulb" class="product-image">
+                    <div class="product-details">
+                        <div class="product-name">LED Smart Bulb Set</div>
+                        <div class="product-quantity">Qty: 2</div>
+                        <div class="product-price">$89.00</div>
+                    </div>
+                </div>
+
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1558002038-1055907df827?w=200" alt="Smart Thermostat" class="product-image">
+                    <div class="product-details">
+                        <div class="product-name">Smart Thermostat</div>
+                        <div class="product-quantity">Qty: 1</div>
+                        <div class="product-price">$179.00</div>
+                    </div>
+                </div>
+
+                <div class="coupon-section">
+                    <div class="coupon-input">
+                        <input type="text" placeholder="Enter coupon code">
+                        <button class="apply-btn">Apply</button>
+                    </div>
+                </div>
+
+                <div class="price-breakdown">
+                    <div class="price-row">
+                        <span>Subtotal</span>
+                        <span>$567.00</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Shipping</span>
+                        <span>$15.00</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Tax</span>
+                        <span>$46.56</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total</span>
+                        <span>$628.56</span>
+                    </div>
+                </div>
+
+                <button class="checkout-btn" onclick="processOrder()">
+                    <i data-lucide="lock" width="20" height="20"></i>
+                    Complete Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>SmartHome</h3>
+                <p>Premium smart home solutions for modern living</p>
+                <div class="social-icons">
+                    <i class="social-icon" data-lucide="facebook" width="24" height="24"></i>
+                    <i class="social-icon" data-lucide="twitter" width="24" height="24"></i>
+                    <i class="social-icon" data-lucide="instagram" width="24" height="24"></i>
+                    <i class="social-icon" data-lucide="linkedin" width="24" height="24"></i>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <ul class="footer-links">
+                    <li><a href="#">All Products</a></li>
+                    <li><a href="#">Smart Speakers</a></li>
+                    <li><a href="#">Smart Lighting</a></li>
+                    <li><a href="#">Security</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Shipping Info</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SmartHome. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Add to bottom of each HTML file
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make product cards clickable
+            document.querySelectorAll('.product-card').forEach(card => {
+                if (!card.hasAttribute('onclick')) {
+                    card.style.cursor = 'pointer';
+                    card.addEventListener('click', function(e) {
+                        if (!e.target.closest('button')) {
+                            window.location.href = 'pdp.html';
+                        }
+                    });
+                }
+            });
+            
+            // Cart icon navigation
+            document.querySelectorAll('.cart-icon, .cart-icon-wrapper').forEach(icon => {
+                icon.addEventListener('click', () => window.location.href = 'cart.html');
+            });
+        });
+    </script>
+    <script src="js/navigation.js"></script>
+    <script src="js/ui-interactions.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+</body>
+</html>

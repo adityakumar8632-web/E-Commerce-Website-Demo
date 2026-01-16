@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Kitchen Appliances | Premium Smart Home Store</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Page-specific CSS for Product Listing Page */
+        
+        /* Root Variables (matches design system) */
+        :root {
+            --color-primary: #7B3FBF;
+            --color-secondary: #C7A2FF;
+            --color-accent: #5A2D8C;
+            --color-background: #FDFDFD;
+            --color-card-bg: #F5F0FF;
+            --color-text: #2C2C2C;
+            --color-text-light: #6B6B6B;
+            --color-border: #E5D9F2;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        /* Header / Navbar */
+        .header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            color: white;
+            padding: 1rem 0;
+            /* position: fixed;
+            width: 100%; */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(123, 63, 191, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-secondary);
+            transform: translateY(-2px);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-icons i {
+            flex-shrink: 0;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 900;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-menu-toggle {
+            visibility: hidden;
+        }
+
+        p {
+            color: black;
+            font-size: 20px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #FF4757;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-close {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .cart-item-controls button {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: #eee;
+            cursor: pointer;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* CART STYLES (local to PLP for live tweaking) */
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 390px;
+            max-width: 100%;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -8px 0 24px rgba(0,0,0,0.15);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-panel.open {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .cart-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--color-text);
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            color: var(--color-text);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 1.25rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cart-item-controls button {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            background: var(--color-card-bg);
+            cursor: pointer;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+
+        /* Page Hero */
+        .page-hero {
+            background: linear-gradient(135deg, var(--color-card-bg) 0%, #FFFFFF 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .page-hero h1 {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .page-hero p {
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        .plp-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Filter & Sort Bar */
+        .filter-sort-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(123, 63, 191, 0.1);
+            flex-wrap: wrap;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn, .sort-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--color-card-bg);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            color: var(--color-text);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover, .sort-btn:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .results-count {
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(123, 63, 191, 0.08);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(123, 63, 191, 0.18);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--color-primary);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .product-badge.bestseller {
+            background: #FFB800;
+        }
+
+        .product-badge.new {
+            background: #00D9FF;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            background: var(--color-card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .product-category {
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            margin-bottom: 0.8rem;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .stars {
+            color: #FFB800;
+            display: flex;
+            gap: 0.1rem;
+        }
+
+        .rating-count {
+            color: var(--color-text-light);
+            font-size: 0.85rem;
+            margin-left: 0.3rem;
+        }
+
+        .product-ecosystem {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .ecosystem-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+
+        .ecosystem-icon:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .add-to-cart-btn {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--color-accent);
+            transform: scale(1.05);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 3rem 0;
+        }
+
+        .pagination-btn {
+            padding: 0.8rem 1rem;
+            background: white;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .page-number {
+            padding: 0.8rem 1.2rem;
+            background: white;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .page-number:hover {
+            background: var(--color-card-bg);
+        }
+
+        .page-number.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 0.3rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* cart css */
+        .cart {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .head {
+            padding: 10px 20px;
+            display: flex;
+            height: 10%;
+            justify-content: space-between;
+            background-color: blueviolet;
+        }
+
+        .head .name {
+            margin: auto 0px;
+            font-weight: 600;
+            font-size: larger;
+            color: white;
+        }
+
+        .head button {
+            background: none;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            margin: 0px 20px;
+            margin-top: 20px;
+            height: 75%;
+            overflow-x: hidden;
+        }
+
+        .empty-cart {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            opacity: 0.7;
+        }
+
+        .empty-cart p {
+            font-size: 30px;
+            font-weight: 500;
+        }
+
+        .empty-cart .continue-shopping {
+            height: 45px;
+            padding: 0 25px;
+            border-radius: 100px;
+            border: 2px solid blueviolet;
+            background: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+
+        .content .cart-item {
+            height: 140px;
+            max-width: 600px;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: none;
+            border-radius: 10px;
+            background: rgb(207, 207, 207);
+        }
+
+        .cart-item .left {
+            display: flex;
+            /* align-items: center; */
+            height: 140px;
+            gap: 5px;
+            width: -webkit-fill-available;
+        }
+        
+        .cart-item .right {
+            display: flex;
+        }
+        
+        .cart-item .cart-item-img {
+            min-width: 78px;
+            height: 78px;
+            margin: 10px;
+            border: 1px solid rgb(165, 165, 165);
+            border-radius: 10px;
+        }
+
+        .cart-item .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            row-gap: 2px;
+            width: 100%;
+
+        }
+
+        .cart-item-info .cart-item-title {
+            width: 100%;
+            min-height: 20px;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .cart-item-info .cart-item-desc {
+            width: 100%;
+            min-height: 10px;
+            font-weight: 400;
+            font-size: 15px;
+        }
+
+        .cart-item-info .cart-item-price {
+            width: 100%;
+            min-height: 20px;
+            font-weight: 600;
+            font-size: 20px;
+            /* color: rgb(158, 55, 255); */
+        }
+
+        .cart-item-controls {
+            display: flex;
+            flex-direction: column;
+            width: 100px;
+            margin-right: 10px;
+            gap: 5px;
+        }
+
+        .cart-item-controls .quantity {
+            display: flex;
+            justify-content: space-between;
+            height: 30px;
+            border: none;
+            border-radius: 100px;
+            background: rgb(165, 165, 165);
+        }
+
+        .quantity button{
+            width: 30px;
+            height: 30px;
+            border: 0px solid;
+            background: rgb(165, 165, 165);
+        }
+
+        .quantity span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quantity .inc {
+            border-top-right-radius: 100px;
+            border-bottom-right-radius: 100px;
+            border-left: 1px solid rgb(80, 80, 80);
+        }
+        .quantity .dec {
+            border-top-left-radius: 100px;
+            border-bottom-left-radius: 100px;
+            border-right: 1px solid rgb(80, 80, 80);
+        }
+
+        .cart-item-controls .item-remove {
+            width: -webkit-fill-available;
+            height: 30px;
+            border: 1px red;
+            border-radius: 100px;
+            background: rgb(255, 65, 65);
+            font-weight: 500;
+            font-size: normal;
+        }
+
+        .foot {
+            display: flex;
+            justify-content: center;
+            height: 20%;
+            width: 100%;
+        }
+
+        .foot .cart-function {
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+            max-width: 600px;
+            min-width: 300px;
+            height: 90%;
+            margin-bottom: 10%;
+        }
+
+        .cart-function button {
+            height: 60px;
+            border: none;
+            border-radius: 100px;
+            font-weight: 400;
+            font-size: 20px;
+            transition: 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .cart-function .clear-cart {
+            background: white;
+            border: 2px solid blueviolet;
+        }
+
+        .cart-function .checkout {
+            background: blueviolet;
+            border: 1px solid blueviolet;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+                position: relative;
+            }
+
+            .header {
+                position: fixed;
+                width: 100%;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                width: 100vw; 
+                box-sizing: border-box;
+                background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+                flex-direction: column;
+                padding: 1rem 0;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-toggle {
+                visibility: visible;
+            }
+
+            .page-hero {
+                margin-top: 75px;
+            }
+
+            .page-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .filter-sort-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+                /* Force children to stay inside */
+                max-width: 100%; 
+                overflow: hidden;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+
+                display: flex;
+                flex-wrap: wrap; /* CRITICAL: Allows buttons to drop to next line */
+                gap: 0.5rem;
+                width: 100%;
+            }
+
+            .filter-btn, .sort-btn {
+                padding: 0.5rem 0.8rem; /* Smaller padding for mobile */
+                font-size: 0.9rem;
+                flex-grow: 1; /* Helps buttons fill the row evenly */
+                justify-content: center;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                padding: 0 0.5rem;
+            }
+
+            .header {
+                position: fixed;
+                width: 100%; 
+            }
+
+            .plp-container {
+                padding: 1rem;
+            }
+
+            .nav-icons {
+                gap: 0px;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .page-hero h1 {
+                font-size: 1.5rem;
+                word-wrap: break-word; /* Prevents long words from breaking layout */
+            }
+
+            .page-hero {
+                margin-top: 75px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            html, body {
+                width: 100%;
+                overflow-x: hidden;
+                position: relative;
+            }
+
+            .header {
+                position: fixed;
+                width: 100%;
+            }
+
+            .cart-item {
+                display: flex;
+                flex-direction: column; /* Stack vertically on tiny screens */
+                align-items: flex-start;
+                gap: 0.75rem;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .cart-item-controls {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .page-hero {
+                margin-top: 75px;
+            }
+
+            .cart-item-controls button {
+                width: 28px;
+                height: 28px;
+                border-radius: 6px;
+                border: 1px solid var(--color-border);
+                background: var(--color-card-bg);
+                cursor: pointer;
+            }
+        }
+ 
+    </style>
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <i data-lucide="home"></i>
+                SmartHome
+            </div>
+            <ul class="nav-links">
+                <li><a href="account.html"><i data-lucide="user"></i> Account</a></li>
+                <li><a href="index.html"><i data-lucide="home"></i> Home</a></li>
+                <li><a href="plp.html"><i data-lucide="grid-3x3"></i> Products</a></li>
+                <li><a href="#"><i data-lucide="info"></i> About</a></li>
+                <li><a href="#"><i data-lucide="phone"></i> Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                <!-- Search -->
+                <button class="icon-btn" aria-label="Search">
+                    <i data-lucide="search"></i>
+                </button>
+            
+                <!-- Cart -->
+                <button class="icon-btn" aria-label="Cart">
+                    <i data-lucide="shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </button>
+
+                <!-- CART PANEL -->
+                <div class="cart-panel">
+                    <div class="head">
+                        <div class="name">Your Cart</div>
+                        <button class="cart-close">
+                            <i data-lucide="x"></i>
+                        </button>
+                    </div>
+            
+                    <div class="content" id="cart-content">
+
+                        <!-- Cart items injected here -->
+                    </div>
+            
+                    <div class="foot">
+                        <div class="cart-function">
+                            <p>Total: $<span id="cart-total">0</span></p>
+                            <button id="clear-cart" class="clear-cart">Clear cart</button>
+                            <button id="checkout-btn" class="checkout">Proceed to checkout</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-overlay"></div>
+            </div>            
+        </nav>
+    </header>
+
+
+    <div class="mobile-overlay"></div>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <h1>Smart Kitchen Appliances</h1>
+        <p>Transform your kitchen with intelligent appliances that make cooking effortless and enjoyable</p>
+    </section>
+
+    <!-- Main Content -->
+    <main class="plp-container">
+        <!-- Filter & Sort Bar -->
+        <div class="filter-sort-bar">
+            <div class="filter-section">
+                <div class="filter-label">
+                    <i data-lucide="filter"></i>
+                    Filter:
+                </div>
+                <button class="filter-btn active">All Products</button>
+                <button class="filter-btn">
+                    <i data-lucide="lightbulb"></i>
+                    Smart Lights
+                </button>
+                <button class="filter-btn">
+                    <i data-lucide="cpu"></i>
+                    Automation
+                </button>
+                <button class="filter-btn">
+                    <i data-lucide="chef-hat"></i>
+                    Kitchen
+                </button>
+                <button class="filter-btn">
+                    <i data-lucide="camera"></i>
+                    Surveillance
+                </button>
+            </div>
+            <div class="filter-section">
+                <div class="filter-label">
+                    <i data-lucide="arrow-up-down"></i>
+                    Sort:
+                </div>
+                <button class="sort-btn">
+                    <i data-lucide="trending-up"></i>
+                    Price
+                </button>
+                <button class="sort-btn">
+                    <i data-lucide="star"></i>
+                    Rating
+                </button>
+                <button class="sort-btn">
+                    <i data-lucide="flame"></i>
+                    Popular
+                </button>
+            </div>
+        </div>
+
+        <div class="results-count">Showing 12 of 48 products</div>
+
+        <!-- Product Grid -->
+        <div class="product-grid" id="productGrid">
+            <!-- Product Card 1 -->
+            <div class="product-card" data-id="security-camera">
+                <div class="product-badge bestseller">Best Seller</div>
+                <div class="product-image">
+                    <img src="images/camera-main.png" alt="Smart Security Camera">
+                </div>
+                <div class="product-info">
+                    <p class="product-category">Surveillance</p>
+                    <h3 class="product-title"><a href="pdp.html">SmartNest Smart Security Camera</a></h3>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                        </div>
+                        <span class="rating-count">(247)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="mic" class="ecosystem-icon" title="Alexa"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="Google Home"></i>
+                        <i data-lucide="smartphone" class="ecosystem-icon" title="Siri"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$149.99</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="product-card" data-id="door-lock">
+                <div class="product-badge new">New</div>
+                <div class="product-image">
+                    <img src="images/lock-main.png" alt="door-lock">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest Smart Door Lock</a></h3>
+                    <p class="product-category">Surveillance</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star"></i>
+                        </div>
+                        <span class="rating-count">(89)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="mic" class="ecosystem-icon" title="Alexa"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="Google Home"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$199.99</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="product-card" data-id="video-doorbell">
+                <div class="product-image">
+                    <img src="images/doorbell-main.png" alt="video-doorbell">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"><a href="pdp.html">SmartNest AI Video Doorbell</a></h3>
+                    <p class="product-category">Surveillance</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star"></i>
+                        </div>
+                        <span class="rating-count">(156)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="smartphone" class="ecosystem-icon" title="App Control"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="WiFi"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$79.99</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="product-card" data-id="smart-bulbs">
+                <div class="product-badge">Sale</div>
+                <div class="product-image">
+                    <img src="images/bulb-main.png" alt="smart-bulbs">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"><a href="pdp.html">SmartNest Aura Smart LED Bulb</a></h3>
+                    <p class="product-category">Lighting</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                        </div>
+                        <span class="rating-count">(312)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="mic" class="ecosystem-icon" title="Alexa"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="Google Home"></i>
+                        <i data-lucide="smartphone" class="ecosystem-icon" title="Siri"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$249.99</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 5 -->
+            <div class="product-card" data-id="led-strips">
+                <div class="product-image">
+                    <img src="images/strip-main.png" alt="Smart Kettle">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest LED Strips</a></h3>
+                    <p class="product-category">Lighting</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star"></i>
+                        </div>
+                        <span class="rating-count">(198)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="smartphone" class="ecosystem-icon" title="App Control"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="WiFi"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$89.99</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 6 -->
+            <div class="product-card" data-id="smart-lamps">
+                <div class="product-badge bestseller">Best Seller</div>
+                <div class="product-image">
+                    <img src="images/lamp-main.png" alt="smart-lamps">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest Smart Lamp</a> </h3>
+                    <p class="product-category">Lighting</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                        </div>
+                        <span class="rating-count">(428)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="mic" class="ecosystem-icon" title="Alexa"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="Google Home"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$179.99</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 7 -->
+            <div class="product-card" data-id="smart-coffee-maker">
+                <div class="product-image">
+                    <img src="images/coffee-main.png" alt="Smart Refrigerator">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest Wi-Fi Coffee Maker</a> </h3>
+                    <p class="product-category">Kitchen</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star"></i>
+                        </div>
+                        <span class="rating-count">(134)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="wifi" class="ecosystem-icon" title="WiFi"></i>
+                        <i data-lucide="smartphone" class="ecosystem-icon" title="App Control"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$299.99</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 8 -->
+            <div class="product-card" data-id="smart-fridge">
+                <div class="product-badge new">New</div>
+                <div class="product-image">
+                    <img src="images/fridge-main.png" alt="smart-fridge">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest Smart Refrigerator</a> </h3>
+                    <p class="product-category">Kitchen</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star"></i>
+                        </div>
+                        <span class="rating-count">(92)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="mic" class="ecosystem-icon" title="Alexa"></i>
+                        <i data-lucide="smartphone" class="ecosystem-icon" title="App Control"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$2199.00</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 9 -->
+            <div class="product-card" data-id="smart-dishwasher">
+                <div class="product-image">
+                    <img src="images/dishwasher-main.png" alt="smart-dishwasher">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest Smart Dishwasher</a> </h3>
+                    <p class="product-category">Kitchen</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                        </div>
+                        <span class="rating-count">(203)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="mic" class="ecosystem-icon" title="Alexa"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="Google Home"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$699.00</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 10 -->
+            <div class="product-card" data-id="chimney-exhaust">
+                <div class="product-badge">Sale</div>
+                <div class="product-image">
+                    <img src="images/chimney-main.png" alt="Smart Food Scale">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest Smart Chimney</a> </h3>
+                    <p class="product-category">Kitchen</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star"></i>
+                        </div>
+                        <span class="rating-count">(167)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="smartphone" class="ecosystem-icon" title="App Control"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="WiFi"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$450.00</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 11 -->
+            <div class="product-card" data-id="fan-ac-controller">
+                <div class="product-image">
+                    <img src="images/climate-main.png" alt="fan-ac-controller">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest AC Controller</a> </h3>
+                    <p class="product-category">Automation</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                        </div>
+                        <span class="rating-count">(341)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="mic" class="ecosystem-icon" title="Alexa"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="Google Home"></i>
+                        <i data-lucide="smartphone" class="ecosystem-icon" title="Siri"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$55.00</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 12 -->
+            <div class="product-card" data-id="air-purifier">
+                <div class="product-badge bestseller">Best Seller</div>
+                <div class="product-image">
+                    <img src="images/purifier-main.png" alt="air-purifier">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest AI Air Purifier</a> </h3>
+                    <p class="product-category">Automation</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                        </div>
+                        <span class="rating-count">(512)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="mic" class="ecosystem-icon" title="Alexa"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="Google Home"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$210.00</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 13 -->
+            <div class="product-card" data-id="robot-cleaner">
+                <div class="product-badge bestseller">Best Seller</div>
+                <div class="product-image">
+                    <img src="images/vacuum-main.png" alt="air-purifier">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title"> <a href="pdp.html">SmartNest MopBot AI Vacuum</a> </h3>
+                    <p class="product-category">Automation</p>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                            <i data-lucide="star" style="fill: currentColor;"></i>
+                        </div>
+                        <span class="rating-count">(512)</span>
+                    </div>
+                    <div class="product-ecosystem">
+                        <i data-lucide="mic" class="ecosystem-icon" title="Alexa"></i>
+                        <i data-lucide="wifi" class="ecosystem-icon" title="Google Home"></i>
+                    </div>
+                    <div class="product-footer">
+                        <div class="product-price">$499.00</div>
+                        <button class="add-to-cart-btn">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="pagination-btn" disabled>
+                <i data-lucide="chevron-left"></i>
+                Previous
+            </button>
+            <button class="page-number active">1</button>
+            <button class="page-number">2</button>
+            <button class="page-number">3</button>
+            <button class="page-number">4</button>
+            <button class="pagination-btn">
+                Next
+                <i data-lucide="chevron-right"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About SmartHome</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Shipping & Returns</a></li>
+                    <li><a href="#">Warranty</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Smart Lights</a></li>
+                    <li><a href="#">Smart Fans</a></li>
+                    <li><a href="#">Kitchen Appliances</a></li>
+                    <li><a href="#">Security Systems</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartHome. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Prevent redirect if clicking the 'Add to Cart' button specifically
+                if (!e.target.closest('button')) {
+                    const productId = this.getAttribute('data-id');
+                    // This sends the user to pdp.html?id=security-camera
+                    window.location.href = `pdp.html?id=${productId}`;
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Get the Product ID from the URL
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+
+            // 2. Look up the product in your product.js data
+            // Assuming 'products' is the global object from product.js
+            const product = products[productId];
+
+            if (product) {
+                renderProductDetails(product);
+            } else {
+                // Handle cases where the ID is invalid
+                document.body.innerHTML = "<h1>Product Not Found</h1><a href='plp.html'>Return to Shop</a>";
+            }
+        });
+
+        lucide.createIcons();
+    </script>
+
+    <!-- JavaScript Files (Phase 2) -->
+    <script src="js/navigation.js"></script>
+    <script src="js/ui-interactions.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

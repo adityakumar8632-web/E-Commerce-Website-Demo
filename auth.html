@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - SmartHome Premium</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--color-background) 0%, #FAF7FF 100%);
+            color: var(--color-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(123, 63, 191, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            gap: 0.75rem;
+            color: var(--color-accent);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(123, 63, 191, 0.15);
+            will-change: transform;
+            overflow: hidden;
+            border: 1px solid rgba(123, 63, 191, 0.1);
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: var(--color-card-bg);
+            position: relative;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--color-text);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-tab.active {
+            color: var(--color-primary);
+        }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--color-primary);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 3px 3px 0 0;
+            box-shadow: 0 -2px 12px rgba(123, 63, 191, 0.4);
+            will-change: transform;
+        }
+
+        .auth-content {
+            padding: 2.5rem 2rem;
+            min-height: 520px;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--color-text);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            color: var(--color-primary);
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            border: 2px solid rgba(123, 63, 191, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--color-background);
+            color: var(--color-text);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(123, 63, 191, 0.1);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-primary);
+            padding: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-password:hover {
+            color: var(--color-accent);
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 1.125rem;
+            height: 1.125rem;
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .checkbox-wrapper label {
+            cursor: pointer;
+            color: var(--color-text);
+        }
+
+        .forgot-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            color: var(--color-accent);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            color: white;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 16px rgba(123, 63, 191, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(123, 63, 191, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-card-bg);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(123, 63, 191, 0.2);
+        }
+
+        .social-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-btn {
+            padding: 0.875rem;
+            border: 2px solid rgba(123, 63, 191, 0.2);
+            border-radius: 12px;
+            background: var(--color-background);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-btn:hover {
+            border-color: var(--color-primary);
+            background: var(--color-card-bg);
+            transform: translateY(-2px);
+        }
+
+        .social-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .trust-section {
+            background: var(--color-card-bg);
+            padding: 1.25rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--color-text);
+        }
+
+        .trust-icon {
+            color: var(--color-primary);
+            flex-shrink: 0;
+        }
+
+        footer {
+            padding: 2rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(123, 63, 191, 0.1);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-accent);
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .back-link,
+        .form-input,
+        .btn,
+        .social-btn,
+        .toggle-password {
+            transition: all 0.3s ease;
+        }
+
+        .forgot-link,
+        .footer-links a {
+            transition: color 0.3s ease;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 1.125rem;
+            height: 1.125rem;
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:hover {
+            opacity: 0.8;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .form-input::placeholder {
+            color: #999;
+            opacity: 1;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-primary);
+            padding: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-password:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .logo i,
+        .input-icon,
+        .trust-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media (max-width: 520px) {
+            header {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+            
+            .back-link {
+                font-size: 0.9rem;
+            }
+
+            .auth-container {
+                border-radius: 16px;
+            }
+
+            main {
+                padding: 1rem 0.75rem;
+            }
+
+            .auth-content {
+                padding: 2rem 1.25rem;
+                min-height: auto;
+            }
+
+            .social-buttons {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.75rem;
+            }
+
+            .social-btn {
+                padding: 0.75rem 0.5rem;
+            }
+
+        }
+
+        @media (max-width: 420px) {
+            .form-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .trust-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .trust-icon {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">
+            <i data-lucide="zap"></i>
+            SmartHome
+        </a>
+        <a href="index.html" class="back-link">
+            <i data-lucide="arrow-left"></i>
+            Back to Home
+        </a>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="register">Register</button>
+                <div class="tab-indicator" style="width: 50%; left: 0;"></div>
+            </div>
+
+            <div class="auth-content">
+                <form class="auth-form active" id="login-form">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="mail"></i>
+                            <input type="email" class="form-input" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="lock"></i>
+                            <input type="password" class="form-input" placeholder="Enter your password" required>
+                            <button type="button" class="toggle-password">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i data-lucide="log-in"></i>
+                        Login
+                    </button>
+
+                    <button type="button" class="btn btn-secondary">
+                        <i data-lucide="user"></i>
+                        Continue as Guest
+                    </button>
+
+                    <div class="divider">Or continue with</div>
+
+                    <div class="social-buttons">
+                        <button type="button" class="social-btn">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4285F4;">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="social-btn">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color: #000;">
+                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="social-btn">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color: #FF9900;">
+                                <path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.73-2.594 1.307-4.046 1.73-2.542.736-5.12 1.104-7.738 1.104-3.024 0-5.956-.595-8.796-1.783l-.5-.21c-.348-.146-.615-.284-.8-.41-.154-.13-.18-.276-.076-.436zm21.455-6.728c-.002.095-.043.204-.124.325-.062.096-.25.31-.562.64-.617.657-1.03 1.122-1.236 1.394-.265.37-.463.748-.595 1.134l-.006.018c-.13.39-.136.615-.02.675.12.063.304.002.555-.184l.502-.375c1.09-.83 1.874-1.623 2.352-2.38.315-.51.442-1.04.38-1.59-.02-.174-.14-.324-.36-.45-.22-.124-.42-.126-.6-.006-.18.12-.266.337-.254.648zm-.678 6.608c-.026.036-.1.066-.224.09-.16.03-.314-.02-.46-.15-.07-.084-.15-.27-.24-.556-.096-.288-.13-.53-.1-.726.03-.196.11-.316.24-.36.13-.045.27-.03.42.045l.27.15c.16.104.24.24.25.406.01.166-.02.316-.094.45l-.062.104v.547zm-1.458-11.49c.152-.188.36-.3.625-.336.265-.036.48.032.645.204.165.172.25.414.255.726.005.312-.06.579-.195.8-.12.19-.315.367-.585.53l-.555.355c-.37.234-.62.45-.75.646-.13.196-.19.444-.18.744.012.346.082.614.21.804.13.19.33.286.6.286.26 0 .48-.09.66-.27.18-.18.27-.418.27-.714 0-.176-.03-.33-.09-.462-.06-.132-.18-.264-.36-.396-.18-.132-.27-.27-.27-.414 0-.098.05-.178.15-.24.1-.062.22-.033.36.087.14.12.26.285.36.495.1.21.15.44.15.69 0 .47-.15.87-.45 1.2-.3.33-.69.495-1.17.495-.44 0-.8-.15-1.08-.45-.28-.3-.42-.684-.42-1.152 0-.396.09-.744.27-1.044.18-.3.48-.57.9-.81l.51-.285c.26-.15.43-.285.51-.405.08-.12.12-.285.12-.495 0-.21-.05-.375-.15-.495-.1-.12-.25-.18-.45-.18-.2 0-.37.075-.51.225-.14.15-.21.36-.21.63 0 .12.03.228.09.324.06.096.09.18.09.252 0 .098-.05.166-.15.204-.1.038-.23.007-.39-.093-.16-.1-.29-.254-.39-.462-.1-.208-.15-.44-.15-.696 0-.42.15-.78.45-1.08zM9.584 8.156c-.128.134-.232.25-.31.35-.08.1-.18.25-.3.45-.12.2-.21.4-.27.6-.06.2-.09.42-.09.66 0 .38.09.696.27.948.18.252.43.378.75.378.32 0 .57-.126.75-.378.18-.252.27-.568.27-.948 0-.24-.03-.46-.09-.66-.06-.2-.15-.4-.27-.6-.12-.2-.22-.35-.3-.45-.08-.1-.182-.216-.31-.35zm-1.545 2.73c-.168-.324-.252-.714-.252-1.17 0-.69.18-1.254.54-1.692.36-.438.84-.657 1.44-.657.6 0 1.08.219 1.44.657.36.438.54 1.002.54 1.692 0 .456-.084.846-.252 1.17-.168.324-.402.576-.702.756-.3.18-.642.27-1.026.27-.384 0-.726-.09-1.026-.27-.3-.18-.534-.432-.702-.756zm10.44 0c-.17-.324-.255-.714-.255-1.17 0-.69.18-1.254.54-1.692.36-.438.84-.657 1.44-.657.6 0 1.08.219 1.44.657.36.438.54 1.002.54 1.692 0 .456-.085.846-.255 1.17-.17.324-.404.576-.704.756-.3.18-.644.27-1.026.27s-.726-.09-1.026-.27c-.3-.18-.535-.432-.705-.756zm1.545-2.73c-.13.134-.235.25-.315.35-.08.1-.18.25-.3.45-.12.2-.21.4-.27.6-.06.2-.09.42-.09.66 0 .38.09.696.27.948.18.252.43.378.75.378.32 0 .57-.126.75-.378.18-.252.27-.568.27-.948 0-.24-.03-.46-.09-.66-.06-.2-.15-.4-.27-.6-.12-.2-.22-.35-.3-.45-.08-.1-.185-.216-.315-.35z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="trust-section">
+                        <i class="trust-icon" data-lucide="shield-check"></i>
+                        <div>
+                            <strong>Your data is encrypted</strong><br>
+                            We protect your privacy with industry-leading security measures
+                        </div>
+                    </div>
+                </form>
+
+                <form class="auth-form" id="register-form">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="user"></i>
+                            <input type="text" class="form-input" placeholder="John Doe" id="register-name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="mail"></i>
+                            <input type="email" class="form-input" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="lock"></i>
+                            <input type="password" class="form-input" placeholder="Create a password" required>
+                            <button type="button" class="toggle-password">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <i class="input-icon" data-lucide="lock"></i>
+                            <input type="password" class="form-input" placeholder="Re-enter password" required>
+                            <button type="button" class="toggle-password">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms">I agree to the <a href="#" class="forgot-link">Terms & Conditions</a></label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i data-lucide="user-plus"></i>
+                        Create Account
+                    </button>
+
+                    <div class="divider">Or continue with</div>
+
+                    <div class="social-buttons">
+                        <button type="button" class="social-btn">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4285F4;">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="social-btn">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color: #000;">
+                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="social-btn">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color: #FF9900;">
+                                <path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.73-2.594 1.307-4.046 1.73-2.542.736-5.12 1.104-7.738 1.104-3.024 0-5.956-.595-8.796-1.783l-.5-.21c-.348-.146-.615-.284-.8-.41-.154-.13-.18-.276-.076-.436zm21.455-6.728c-.002.095-.043.204-.124.325-.062.096-.25.31-.562.64-.617.657-1.03 1.122-1.236 1.394-.265.37-.463.748-.595 1.134l-.006.018c-.13.39-.136.615-.02.675.12.063.304.002.555-.184l.502-.375c1.09-.83 1.874-1.623 2.352-2.38.315-.51.442-1.04.38-1.59-.02-.174-.14-.324-.36-.45-.22-.124-.42-.126-.6-.006-.18.12-.266.337-.254.648zm-.678 6.608c-.026.036-.1.066-.224.09-.16.03-.314-.02-.46-.15-.07-.084-.15-.27-.24-.556-.096-.288-.13-.53-.1-.726.03-.196.11-.316.24-.36.13-.045.27-.03.42.045l.27.15c.16.104.24.24.25.406.01.166-.02.316-.094.45l-.062.104v.547zm-1.458-11.49c.152-.188.36-.3.625-.336.265-.036.48.032.645.204.165.172.25.414.255.726.005.312-.06.579-.195.8-.12.19-.315.367-.585.53l-.555.355c-.37.234-.62.45-.75.646-.13.196-.19.444-.18.744.012.346.082.614.21.804.13.19.33.286.6.286.26 0 .48-.09.66-.27.18-.18.27-.418.27-.714 0-.176-.03-.33-.09-.462-.06-.132-.18-.264-.36-.396-.18-.132-.27-.27-.27-.414 0-.098.05-.178.15-.24.1-.062.22-.033.36.087.14.12.26.285.36.495.1.21.15.44.15.69 0 .47-.15.87-.45 1.2-.3.33-.69.495-1.17.495-.44 0-.8-.15-1.08-.45-.28-.3-.42-.684-.42-1.152 0-.396.09-.744.27-1.044.18-.3.48-.57.9-.81l.51-.285c.26-.15.43-.285.51-.405.08-.12.12-.285.12-.495 0-.21-.05-.375-.15-.495-.1-.12-.25-.18-.45-.18-.2 0-.37.075-.51.225-.14.15-.21.36-.21.63 0 .12.03.228.09.324.06.096.09.18.09.252 0 .098-.05.166-.15.204-.1.038-.23.007-.39-.093-.16-.1-.29-.254-.39-.462-.1-.208-.15-.44-.15-.696 0-.42.15-.78.45-1.08zM9.584 8.156c-.128.134-.232.25-.31.35-.08.1-.18.25-.3.45-.12.2-.21.4-.27.6-.06.2-.09.42-.09.66 0 .38.09.696.27.948.18.252.43.378.75.378.32 0 .57-.126.75-.378.18-.252.27-.568.27-.948 0-.24-.03-.46-.09-.66-.06-.2-.15-.4-.27-.6-.12-.2-.22-.35-.3-.45-.08-.1-.182-.216-.31-.35zm-1.545 2.73c-.168-.324-.252-.714-.252-1.17 0-.69.18-1.254.54-1.692.36-.438.84-.657 1.44-.657.6 0 1.08.219 1.44.657.36.438.54 1.002.54 1.692 0 .456-.084.846-.252 1.17-.168.324-.402.576-.702.756-.3.18-.642.27-1.026.27-.384 0-.726-.09-1.026-.27-.3-.18-.534-.432-.702-.756zm10.44 0c-.17-.324-.255-.714-.255-1.17 0-.69.18-1.254.54-1.692.36-.438.84-.657 1.44-.657.6 0 1.08.219 1.44.657.36.438.54 1.002.54 1.692 0 .456-.085.846-.255 1.17-.17.324-.404.576-.704.756-.3.18-.644.27-1.026.27s-.726-.09-1.026-.27c-.3-.18-.535-.432-.705-.756zm1.545-2.73c-.13.134-.235.25-.315.35-.08.1-.18.25-.3.45-.12.2-.21.4-.27.6-.06.2-.09.42-.09.66 0 .38.09.696.27.948.18.252.43.378.75.378.32 0 .57-.126.75-.378.18-.252.27-.568.27-.948 0-.24-.03-.46-.09-.66-.06-.2-.15-.4-.27-.6-.12-.2-.22-.35-.3-.45-.08-.1-.185-.216-.315-.35z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <form class="auth-form" id="register-form">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon" data-lucide="user"></i>
+                        <input type="text" class="form-input" placeholder="John Doe" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon" data-lucide="mail"></i>
+                        <input type="email" class="form-input" placeholder="your@email.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon" data-lucide="lock"></i>
+                        <input type="password" class="form-input" placeholder="Create a password" required>
+                        <button type="button" class="toggle-password">
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon" data-lucide="lock"></i>
+                        <input type="password" class="form-input" placeholder="Re-enter password" required>
+                        <button type="button" class="toggle-password">
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to the <a href="#" class="forgot-link">Terms & Conditions</a></label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i data-lucide="user-plus"></i>
+                    Create Account
+                </button>
+
+                <div class="divider">Or continue with</div>
+
+                <div class="social-buttons">
+                    <button type="button" class="social-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4285F4;">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="social-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="color: #000;">
+                            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="social-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="color: #FF9900;">
+                            <path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.73-2.594 1.307-4.046 1.73-2.542.736-5.12 1.104-7.738 1.104-3.024 0-5.956-.595-8.796-1.783l-.5-.21c-.348-.146-.615-.284-.8-.41-.154-.13-.18-.276-.076-.436zm21.455-6.728c-.002.095-.043.204-.124.325-.062.096-.25.31-.562.64-.617.657-1.03 1.122-1.236 1.394-.265.37-.463.748-.595 1.134l-.006.018c-.13.39-.136.615-.02.675.12.063.304.002.555-.184l.502-.375c1.09-.83 1.874-1.623 2.352-2.38.315-.51.442-1.04.38-1.59-.02-.174-.14-.324-.36-.45-.22-.124-.42-.126-.6-.006-.18.12-.266.337-.254.648zm-.678 6.608c-.026.036-.1.066-.224.09-.16.03-.314-.02-.46-.15-.07-.084-.15-.27-.24-.556-.096-.288-.13-.53-.1-.726.03-.196.11-.316.24-.36.13-.045.27-.03.42.045l.27.15c.16.104.24.24.25.406.01.166-.02.316-.094.45l-.062.104v.547z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="trust-section">
+                    <i class="trust-icon" data-lucide="shield-check"></i>
+                    <div>
+                        <strong>Your data is encrypted</strong><br>
+                        We protect your privacy with industry-leading security measures
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Customer Support</a>
+    </div>
+    <p class="footer-text">© 2024 SmartHome Premium. All rights reserved.</p>
+</footer>
+
+<script>
+    lucide.createIcons();
+    
+  // MOCK AUTH — DEMO PURPOSE ONLY
+  document.getElementById("register-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("register-name").value.trim();
+
+    if (!name) {
+      alert("Please enter your name");
+      return;
+    }
+
+    // Mock auth object (GitHub-safe)
+    const mockAuth = {
+      isLoggedIn: true,
+      name: name
+    };
+
+    localStorage.setItem("mockAuth", JSON.stringify(mockAuth));
+
+    // Redirect to account page
+    window.location.href = "account.html";
+  });
+
+  // Add to bottom of each HTML file
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make product cards clickable
+        document.querySelectorAll('.product-card').forEach(card => {
+            if (!card.hasAttribute('onclick')) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('button')) {
+                        window.location.href = 'pdp.html';
+                    }
+                });
+            }
+        });
+        
+        // Cart icon navigation
+        document.querySelectorAll('.cart-icon, .cart-icon-wrapper').forEach(icon => {
+            icon.addEventListener('click', () => window.location.href = 'cart.html');
+        });
+    });
+
+</script>
+<script src="js/ui-interactions.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

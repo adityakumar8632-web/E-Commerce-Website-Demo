@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart LED Bulb - Premium smart home lighting with voice control and energy efficiency">
+    <title>Smart LED Bulb | Premium Smart Home</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif);
+            background-color: var(--color-background, #FDFDFD);
+            color: var(--color-text, #2C2C2C);
+            line-height: 1.6;
+        }
+
+        *:focus {
+            outline: none;
+        }
+
+        *:focus-visible {
+            outline: 3px solid var(--color-secondary, #C7A2FF);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .thumbnail:focus-visible {
+            border-color: var(--color-primary, #7B3FBF);
+            outline: 3px solid var(--color-secondary, #C7A2FF);
+        }
+
+        /* Header / Navbar */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(253, 253, 253, 0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 2px 16px rgba(123, 63, 191, 0.08);
+            z-index: 1000;
+            transition: all 0.3s ease, backdrop-filter 0.3s ease;
+            will-change: box-shadow;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary, #7B3FBF);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--color-text, #2C2C2C);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary, #7B3FBF);
+        }
+
+        /* Product Hero Section */
+        .product-hero {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .product-image-section {
+            position: static;
+            top: 120px;
+        }
+
+        .main-product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--color-card-bg, #F5F0FF) 0%, #FFFFFF 100%);
+            box-shadow: 0 8px 32px rgba(123, 63, 191, 0.12);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-product-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                var(--color-card-bg, #F5F0FF) 0%,
+                rgba(199, 162, 255, 0.1) 50%,
+                var(--color-card-bg, #F5F0FF) 100%
+            );
+            background-size: 200% 200%;
+            animation: shimmer 2s infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .main-product-image:empty::before {
+            opacity: 1;
+        }
+
+        .main-product-image img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .thumbnail-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: var(--color-card-bg, #F5F0FF);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .thumbnail:hover {
+            border-color: var(--color-primary, #7B3FBF);
+            transform: translateY(-2px);
+        }
+
+        .thumbnail img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+        }
+
+        .product-info-section {
+            padding-top: 1rem;
+        }
+
+        .product-name {
+            font-size: clamp(2rem, 5vw, 3rem);
+            line-height: 1.2;
+            font-weight: 700;
+            color: var(--color-text, #2C2C2C);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .product-tagline {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--color-primary, #7B3FBF);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .rating-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stars {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .stars i {
+            width: 20px;
+            height: 20px;
+            color: #FFB800;
+        }
+
+        .rating-text {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .price {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--color-primary, #7B3FBF);
+            margin-bottom: 2rem;
+        }
+
+        .assistant-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .badge {
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            background: var(--color-card-bg, #F5F0FF);
+            border: 2px solid var(--color-secondary, #C7A2FF);
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .badge:hover {
+            background: var(--color-secondary, #C7A2FF);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(123, 63, 191, 0.25);
+        }
+
+        .badge:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .badge i {
+            width: 18px;
+            height: 18px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 1.2rem 2rem;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--color-primary, #7B3FBF) 0%, var(--color-accent, #5A2D8C) 100%);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 24px rgba(123, 63, 191, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(123, 63, 191, 0.4);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(123, 63, 191, 0.35);
+        }
+
+        .btn-primary:focus-visible {
+            outline: 3px solid var(--color-secondary, #C7A2FF);
+            outline-offset: 2px;
+        }
+
+        .btn-wishlist:focus-visible {
+            outline: 3px solid var(--color-secondary, #C7A2FF);
+            outline-offset: 2px;
+        }
+
+        .btn-wishlist {
+            padding: 1.2rem;
+            border: 2px solid var(--color-primary, #7B3FBF);
+            border-radius: 16px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-wishlist:hover {
+            background: var(--color-card-bg, #F5F0FF);
+            transform: translateY(-2px);
+        }
+
+        .btn-wishlist i {
+            width: 24px;
+            height: 24px;
+            color: var(--color-primary, #7B3FBF);
+        }
+
+        /* Key Highlights Section */
+        .key-highlights {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--color-text, #2C2C2C);
+        }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .highlight-card {
+            padding: 1rem;
+            border-radius: 20px;
+            background: var(--color-card-bg, #F5F0FF);
+            box-shadow: 0 4px 20px rgba(123, 63, 191, 0.08);
+            text-align: center;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(123, 63, 191, 0.16);
+        }
+
+        .highlight-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem;
+            padding: 1rem;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--color-primary, #7B3FBF) 0%, var(--color-accent, #5A2D8C) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .highlight-icon i {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        .highlight-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+            color: var(--color-text, #2C2C2C);
+        }
+
+        .highlight-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Product Description */
+        .product-description {
+            max-width: 1000px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .description-content {
+            background: var(--color-card-bg, #F5F0FF);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(123, 63, 191, 0.08);
+        }
+
+        .description-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .description-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Specifications Table */
+        .specifications {
+            max-width: 1000px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .specs-table {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(123, 63, 191, 0.08);
+        }
+
+        .spec-row {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--color-card-bg, #F5F0FF);
+            transition: background 0.3s ease;
+        }
+
+        .spec-row:last-child {
+            border-bottom: none;
+        }
+
+        .spec-row:hover {
+            background: var(--color-card-bg, #F5F0FF);
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: var(--color-text, #2C2C2C);
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        /* Ecosystem Compatibility */
+        .ecosystem-section {
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .ecosystem-content {
+            background: linear-gradient(135deg, var(--color-card-bg, #F5F0FF) 0%, #FFFFFF 100%);
+            padding: 4rem;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(123, 63, 191, 0.12);
+            text-align: center;
+        }
+
+        .ecosystem-intro {
+            font-size: 1.25rem;
+            color: #666;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .ecosystem-item {
+            padding: 2rem;
+            border-radius: 16px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .ecosystem-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(123, 63, 191, 0.16);
+        }
+
+        .ecosystem-item-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: var(--color-card-bg, #F5F0FF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ecosystem-item-icon i {
+            width: 32px;
+            height: 32px;
+            color: var(--color-primary, #7B3FBF);
+        }
+
+        .ecosystem-item h4 {
+            font-size: 1.1rem;
+            color: var(--color-text, #2C2C2C);
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            max-width: 1200px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .average-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .rating-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-primary, #7B3FBF);
+        }
+
+        .rating-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .btn-write-review {
+            padding: 1rem 2rem;
+            border: 2px solid var(--color-primary, #7B3FBF);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--color-primary, #7B3FBF);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-write-review:hover {
+            background: var(--color-primary, #7B3FBF);
+            color: white;
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .review-card {
+            padding: 2rem;
+            border-radius: 20px;
+            background: var(--color-card-bg, #F5F0FF);
+            box-shadow: 0 4px 16px rgba(123, 63, 191, 0.08);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .reviewer-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary, #7B3FBF) 0%, var(--color-accent, #5A2D8C) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--color-text, #2C2C2C);
+        }
+
+        .review-stars {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .review-stars i {
+            width: 16px;
+            height: 16px;
+            color: #FFB800;
+        }
+
+        .review-text {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--color-accent, #5A2D8C) 0%, var(--color-primary, #7B3FBF) 100%);
+            color: white;
+            padding: 4rem 2rem 2rem;
+            margin-top: 8rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .social-icon i {
+            width: 20px;
+            height: 20px;
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .assistant-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stars i,
+        .review-stars i {
+            transition: transform 0.2s ease;
+        }
+
+        .stars:hover i,
+        .review-stars:hover i {
+            transform: scale(1.1);
+        }
+
+        .stars i:hover,
+        .review-stars i:hover {
+            transform: scale(1.2);
+        }
+
+        .main-product-image img,
+        .thumbnail img {
+            /* existing styles... */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .review-text,
+        .spec-value,
+        .ecosystem-intro {
+            color: #4a4a4a;
+        }
+
+        .key-highlights,
+        .product-description,
+        .specifications,
+        .ecosystem-section,
+        .reviews-section {
+            max-width: var(--section-max-width, 1400px);
+            margin: clamp(4rem, 8vw, 6rem) auto;
+            padding: 0 clamp(1rem, 3vw, 2rem);
+        }
+
+        .product-description,
+        .specifications {
+            max-width: 1000px;
+        }
+
+        .reviews-section {
+            max-width: 1200px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .product-hero {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .product-image-section {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) and (max-width: 1024px) {
+            .btn-primary {
+                padding: 1.25rem 2rem;
+                min-height: 56px;
+            }
+            
+            .btn-wishlist {
+                min-width: 56px;
+                min-height: 56px;
+            }
+
+            .product-hero {
+                gap: 2.5rem;
+                padding: 0 2.5rem;
+            }
+            
+            .product-name {
+                font-size: 2rem;
+            }
+
+            .price {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .highlights-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ecosystem-grid {
+                grid-template-columns: repeat(2, 47%);
+            }
+
+            .reviews-header {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .spec-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .ecosystem-content {
+                padding: 2rem;
+            }
+
+            .description-content {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 1rem;
+            }
+            
+            .product-hero {
+                margin: 2rem auto;
+                padding: 0 1rem;
+            }
+            
+            .product-info-section {
+                padding-top: 0;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .btn-wishlist {
+                width: 100%;
+            }
+            
+            .key-highlights,
+            .product-description,
+            .specifications,
+            .ecosystem-section,
+            .reviews-section {
+                margin: 4rem auto;
+                padding: 0 1rem;
+            }
+            
+            .section-title {
+                margin-bottom: 2rem;
+            }
+            
+            .description-content,
+            .ecosystem-content {
+                padding: 1.5rem;
+            }
+            
+            .spec-row {
+                padding: 1rem 1.5rem;
+            }
+            
+            .footer {
+                padding: 3rem 1rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .thumbnail {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .thumbnail-row {
+                gap: 0.75rem;
+            }
+
+            .assistant-badges {
+                gap: 0.75rem;
+            }
+            
+            .badge {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+                flex: 1 1 calc(50% - 0.375rem);
+                min-width: 140px;
+                justify-content: center;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <i data-lucide="home"></i>
+                SmartNest
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html"><i data-lucide="home"></i> Home</a></li>
+                <li><a href="products.html"><i data-lucide="grid-3x3"></i> Products</a></li>
+                <li><a href="cart.html"><i data-lucide="shopping-cart"></i> Cart</a></li>
+                <li><a href="account.html"><i data-lucide="user"></i> Account</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Product Hero Section -->
+    <section class="product-hero">
+        <div class="product-image-section">
+            <div class="main-product-image">
+                <img src="" alt="Smart LED Bulb">
+            </div>
+            <div class="thumbnail-row">
+                <div class="thumbnail">
+                    <img src="https://images.unsplash.com/photo-1550985616-10810253b84d?w=200&h=200&fit=crop" alt="View 1">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=200&fit=crop" alt="View 2">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://images.unsplash.com/photo-1524532195239-e5ebfb1e6d7c?w=200&h=200&fit=crop" alt="View 3">
+                </div>
+            </div>
+        </div>
+
+        <div class="product-info-section">
+            <h1 class="product-name">Smart LED Bulb</h1>
+            <p class="product-tagline">Illuminate your world with intelligent lighting</p>
+            
+            <div class="rating-section">
+                <div class="stars">
+                    <i data-lucide="star" fill="#FFB800"></i>
+                    <i data-lucide="star" fill="#FFB800"></i>
+                    <i data-lucide="star" fill="#FFB800"></i>
+                    <i data-lucide="star" fill="#FFB800"></i>
+                    <i data-lucide="star" fill="#FFB800"></i>
+                </div>
+                <span class="rating-text">4.8 (342 reviews)</span>
+            </div>
+
+            <div class="price">$39.99</div>
+
+            <div class="assistant-badges">
+                <div class="badge">
+                    <i data-lucide="mic"></i>
+                    Alexa
+                </div>
+                <div class="badge">
+                    <i data-lucide="speaker"></i>
+                    Google Nest
+                </div>
+                <div class="badge">
+                    <i data-lucide="apple"></i>
+                    Siri / HomePod
+                </div>
+                <div class="badge">
+                    <i data-lucide="sparkles"></i>
+                    Gemini
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-primary" onclick="addToCart(); window.location.href='cart.html'">
+                    <i data-lucide="shopping-cart"></i>
+                    Add to Cart
+                </button>
+                <button class="btn-wishlist">
+                    <i data-lucide="heart"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Highlights Section -->
+    <section class="key-highlights">
+        <h2 class="section-title">Key Highlights</h2>
+        <div class="highlights-grid">
+            <div class="highlight-card">
+                <div class="highlight-icon">
+                    <i data-lucide="zap"></i>
+                </div>
+                <h3>Energy Efficient</h3>
+                <p>Save up to 80% on electricity costs with advanced LED technology and smart scheduling capabilities.</p>
+            </div>
+            <div class="highlight-card">
+                <div class="highlight-icon">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <h3>Privacy First</h3>
+                <p>Local control with encrypted communication. Your data stays private and secure at all times.</p>
+            </div>
+            <div class="highlight-card">
+                <div class="highlight-icon">
+                    <i data-lucide="network"></i>
+                </div>
+                <h3>Ecosystem Ready</h3>
+                <p>Seamlessly integrates with all major smart home platforms and voice assistants.</p>
+            </div>
+            <div class="highlight-card">
+                <div class="highlight-icon">
+                    <i data-lucide="cpu"></i>
+                </div>
+                <h3>Smart Automation</h3>
+                <p>Create intelligent lighting scenes and schedules that adapt to your lifestyle automatically.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Description -->
+    <section class="product-description">
+        <h2 class="section-title">Product Description</h2>
+        <div class="description-content">
+            <p>Transform your living space with our premium Smart LED Bulb, designed to bring elegance and intelligence to every corner of your home. This state-of-the-art bulb combines energy efficiency with cutting-edge smart technology, offering you complete control over your lighting environment through voice commands, mobile apps, or automated schedules.</p>
+            
+            <p>With 16 million color options and adjustable white temperature ranging from warm amber to cool daylight, you can create the perfect ambiance for any occasion. Whether you're hosting a dinner party, working from home, or winding down for the evening, our Smart LED Bulb adapts to your needs effortlessly.</p>
+            
+            <p>Installation is simple—just screw it into any standard socket and connect to your Wi-Fi network. The bulb's advanced chipset ensures reliable performance and instant response times, while consuming a fraction of the energy used by traditional bulbs. Experience the future of home lighting with technology that respects both your comfort and the environment.</p>
+        </div>
+    </section>
+
+    <!-- Specifications Table -->
+    <section class="specifications">
+        <h2 class="section-title">Technical Specifications</h2>
+        <div class="specs-table">
+            <div class="spec-row">
+                <div class="spec-label">Dimensions</div>
+                <div class="spec-value">60mm × 60mm × 110mm (Standard A19)</div>
+            </div>
+            <div class="spec-row">
+                <div class="spec-label">Power Usage</div>
+                <div class="spec-value">9W (equivalent to 60W incandescent)</div>
+            </div>
+            <div class="spec-row">
+                <div class="spec-label">Brightness</div>
+                <div class="spec-value">800 lumens (fully adjustable)</div>
+            </div>
+            <div class="spec-row">
+                <div class="spec-label">Color Temperature</div>
+                <div class="spec-value">2700K - 6500K (warm to cool white)</div>
+            </div>
+            <div class="spec-row">
+                <div class="spec-label">Connectivity</div>
+                <div class="spec-value">Wi-Fi 2.4GHz, Bluetooth 5.0</div>
+            </div>
+            <div class="spec-row">
+                <div class="spec-label">Lifespan</div>
+                <div class="spec-value">25,000 hours (22+ years at 3hrs/day)</div>
+            </div>
+            <div class="spec-row">
+                <div class="spec-label">Warranty</div>
+                <div class="spec-value">2 years manufacturer warranty</div>
+            </div>
+            <div class="spec-row">
+                <div class="spec-label">Certifications</div>
+                <div class="spec-value">Energy Star, FCC, CE, RoHS</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem Compatibility Section -->
+    <section class="ecosystem-section">
+        <h2 class="section-title">Ecosystem Compatibility</h2>
+        <div class="ecosystem-content">
+            <p class="ecosystem-intro">Works seamlessly with your entire smart home ecosystem. Connect, automate, and control all your devices from one unified platform.</p>
+            
+            <div class="ecosystem-grid">
+                <div class="ecosystem-item">
+                    <div class="ecosystem-item-icon">
+                        <i data-lucide="lightbulb"></i>
+                    </div>
+                    <h4>Smart Lights</h4>
+                </div>
+                <div class="ecosystem-item">
+                    <div class="ecosystem-item-icon">
+                        <i data-lucide="fan"></i>
+                    </div>
+                    <h4>Smart Fans</h4>
+                </div>
+                <div class="ecosystem-item">
+                    <div class="ecosystem-item-icon">
+                        <i data-lucide="utensils"></i>
+                    </div>
+                    <h4>Smart Kitchen</h4>
+                </div>
+                <div class="ecosystem-item">
+                    <div class="ecosystem-item-icon">
+                        <i data-lucide="video"></i>
+                    </div>
+                    <h4>Surveillance</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews & Ratings Section -->
+    <section class="reviews-section">
+        <div class="reviews-header">
+            <div class="average-rating">
+                <div class="rating-number">4.8</div>
+                <div class="rating-details">
+                    <div class="stars">
+                        <i data-lucide="star" fill="#FFB800"></i>
+                        <i data-lucide="star" fill="#FFB800"></i>
+                        <i data-lucide="star" fill="#FFB800"></i>
+                        <i data-lucide="star" fill="#FFB800"></i>
+                        <i data-lucide="star" fill="#FFB800"></i>
+                    </div>
+                    <span class="rating-text">Based on 342 reviews</span>
+                </div>
+            </div>
+            <button class="btn-write-review">Write a Review</button>
+        </div>
+
+        <div class="reviews-list">
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">S</div>
+                        <div>
+                            <div class="reviewer-name">Sarah Mitchell</div>
+                            <div class="review-stars">
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="review-text">Absolutely love these bulbs! The color options are stunning and the voice control integration works flawlessly with my Google Home. Setup was incredibly easy and the app is intuitive. The energy savings are already noticeable on my electricity bill. Highly recommended for anyone looking to upgrade their home lighting!</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">M</div>
+                        <div>
+                            <div class="reviewer-name">Michael Chen</div>
+                            <div class="review-stars">
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="review-text">Great product with excellent build quality. The brightness is impressive and the color accuracy is spot-on. I've set up several automation routines and they work perfectly. My only minor complaint is that the initial connection took a few tries, but once connected, it's been rock solid. The scheduling feature has been a game-changer for my morning routine.</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">E</div>
+                        <div>
+                            <div class="reviewer-name">Emily Rodriguez</div>
+                            <div class="review-stars">
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                                <i data-lucide="star" fill="#FFB800"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="review-text">These bulbs have transformed my home! I love being able to control the ambiance from my phone or with voice commands. The warm white setting is perfect for evenings, and the bright cool white is great for working. The quality is exceptional and they feel premium. Worth every penny. I'm planning to replace all my old bulbs with these!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>SmartHome</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.7;">Premium smart home solutions designed for modern living. Transform your space with intelligent technology.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Products</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Smart Lighting</a></li>
+                    <li><a href="#">Security Systems</a></li>
+                    <li><a href="#">Climate Control</a></li>
+                    <li><a href="#">Entertainment</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Warranty</a></li>
+                    <li><a href="#">Returns</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <div class="social-icon">
+                        <i data-lucide="facebook"></i>
+                    </div>
+                    <div class="social-icon">
+                        <i data-lucide="twitter"></i>
+                    </div>
+                    <div class="social-icon">
+                        <i data-lucide="instagram"></i>
+                    </div>
+                    <div class="social-icon">
+                        <i data-lucide="linkedin"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SmartHome. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+    <script src="js/product.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const id = new URLSearchParams(location.search).get('id');
+  const product = id && products[id];
+  if (!product) return;
+
+  /* Cache selectors once */
+  const $ = s => document.querySelector(s);
+
+  $('.product-name').textContent = product.name;
+  $('.product-tagline').textContent = product.tagline;
+  $('.price').textContent = product.price;
+  $('.rating-text').textContent =
+    `${product.rating} (${product.ratingCount} reviews)`;
+
+  const img = $('.main-product-image img');
+  if (img) {
+    img.src = product.mainImage;
+    img.alt = product.name;
+  }
+
+  const thumbs = $('.thumbnail-row');
+  if (thumbs) {
+    thumbs.innerHTML = product.thumbnails
+      .map(src => `<div class="thumbnail"><img src="${src}" alt=""></div>`)
+      .join('');
+  }
+
+  const desc = $('.description-content');
+  if (desc) {
+    desc.innerHTML = product.description.map(p => `<p>${p}</p>`).join('');
+  }
+
+  const highlights = $('.highlights-grid');
+  if (highlights) {
+    highlights.innerHTML = product.features.map(f => `
+      <div class="highlight-card">
+        <div class="highlight-icon"><i data-lucide="${f.icon}"></i></div>
+        <h3>${f.title}</h3>
+        <p>${f.desc}</p>
+      </div>
+    `).join('');
+  }
+
+  const specs = $('.specs-table');
+  if (specs) {
+    specs.innerHTML = Object.entries(product.specifications)
+      .map(([k, v]) => `
+        <div class="spec-row">
+          <div class="spec-label">${k}</div>
+          <div class="spec-value">${v}</div>
+        </div>
+      `).join('');
+  }
+
+  const reviews = $('.reviews-list');
+  if (reviews) {
+    reviews.innerHTML = product.reviews.map(r => `
+      <div class="review-card">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">${r.user}</div>
+            <div class="reviewer-name">${r.name}</div>
+          </div>
+          <span class="review-date">${r.date}</span>
+        </div>
+        <p class="review-text">${r.comment}</p>
+      </div>
+    `).join('');
+  }
+
+  window.lucide?.createIcons();
+});
+</script>
+
+</body>
+</html>

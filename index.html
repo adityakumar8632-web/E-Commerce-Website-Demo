@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartNest - Premium Smart Home Solutions</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* ==================== PAGE-SPECIFIC STYLES ==================== */
+        :root {
+            --color-primary: #7B3FBF;
+            --color-secondary: #C7A2FF;
+            --color-accent: #5A2D8C;
+            --color-background: #FDFDFD;
+            --color-card-bg: #F5F0FF;
+            --color-text: #2C2C2C;
+            --transition-base: 0.3s ease;
+            --shadow-sm: 0 2px 8px rgba(123, 63, 191, 0.08);
+            --shadow-md: 0 10px 30px rgba(123, 63, 191, 0.15);
+            --shadow-lg: 0 12px 30px rgba(123, 63, 191, 0.2);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-full: 50px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--color-background, #FDFDFD);
+            color: var(--color-text, #2C2C2C);
+            line-height: 1.6;
+        }
+
+        /* ==================== HEADER / NAVBAR ==================== */
+             
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(253, 253, 253, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-primary, #7B3FBF);
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-primary, #7B3FBF);
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* z-index: 1002;
+            transition: transform 0.3s ease; */
+        }
+
+        .mobile-menu-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .mobile-menu-btn:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 2000;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 300px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
+
+            display: flex;
+            flex-direction: column;
+            padding-top: 5rem;
+            list-style: none;
+
+            opacity: 0;
+            transform: translateX(20px);
+            transition: right 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+
+            z-index: 3000;
+            pointer-events: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text, #2C2C2C);
+            font-weight: 500;
+            gap: 0.5rem;
+            display: block;
+            padding: 1.25rem 2rem;
+            font-size: 1.1rem;
+            transition: background 0.2s ease;
+        }
+
+        .nav-links.active {
+            right: 0;
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        
+        .hero {
+            background: linear-gradient(135deg, var(--color-primary, #7B3FBF) 0%, var(--color-secondary, #C7A2FF) 100%);
+            padding: 4rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw + 1rem, 3.5rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw + 0.5rem, 1.25rem);
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: white;
+            color: var(--color-primary, #7B3FBF);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        /* ==================== FEATURED CATEGORIES ==================== */
+        
+        .categories-section {
+            max-width: 1400px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-accent, #5A2D8C);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .category-card {
+            background: var(--color-card-bg, #F5F0FF);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(123, 63, 191, 0.2);
+            border-color: var(--color-secondary, #C7A2FF);
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--color-primary, #7B3FBF), var(--color-secondary, #C7A2FF));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+        }
+
+        .category-card h3 {
+            font-size: 1.5rem;
+            color: var(--color-accent, #5A2D8C);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* ==================== BEST SELLERS ==================== */
+        
+        .products-section {
+            background: var(--color-card-bg, #F5F0FF);
+            padding: 5rem 2rem;
+        }
+
+        .products-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+            will-change: transform;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-card:not(:hover) {
+            will-change: auto;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--color-primary, #7B3FBF);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            font-size: 1.25rem;
+            color: var(--color-accent, #5A2D8C);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary, #7B3FBF);
+        }
+
+        /* ==================== USP / TRUST SECTION ==================== */
+        
+        .usp-section {
+            max-width: 1400px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .usp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .usp-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .usp-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--color-secondary, #C7A2FF), var(--color-primary, #7B3FBF));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+        }
+
+        .usp-item h3 {
+            font-size: 1.25rem;
+            color: var(--color-accent, #5A2D8C);
+            margin-bottom: 0.75rem;
+        }
+
+        .usp-item p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* ==================== NEWSLETTER ==================== */
+        
+        .newsletter-section {
+            background: linear-gradient(135deg, var(--color-accent, #5A2D8C), var(--color-primary, #7B3FBF));
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .newsletter-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .newsletter-content h2 {
+            font-size: 2.25rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-content p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .newsletter-button {
+            background: white;
+            color: var(--color-primary, #7B3FBF);
+            padding: 1rem 2rem;
+            white-space: nowrap;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .newsletter-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* ==================== FOOTER ==================== */
+        
+        .footer {
+            background: var(--color-accent, #5A2D8C);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h3 {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Focus styles for keyboard navigation */
+        .cta-button:focus-visible,
+        .newsletter-button:focus-visible {
+            outline: 3px solid var(--color-secondary);
+            outline-offset: 2px;
+        }
+
+        .nav-links a:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        .newsletter-input:focus {
+            box-shadow: 0 0 0 3px rgba(123, 63, 191, 0.2);
+        }
+
+        .product-card:focus-within,
+        .category-card:focus-within {
+            outline: 2px solid var(--color-secondary);
+            outline-offset: 2px;
+        }
+
+        .cta-button:active,
+        .newsletter-button:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .product-card:active,
+        .category-card:active {
+            transform: translateY(-2px);
+        }
+
+        .newsletter-input::placeholder {
+            color: #999;
+            opacity: 1;
+        }
+
+        .newsletter-input:focus::placeholder {
+            opacity: 0.5;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+            
+            /* Show mobile menu button */
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                width: 100%;
+                border-bottom: 1px solid rgba(123, 63, 191, 0.1);
+            }
+
+            .nav-links a {
+                width: 100%;
+                padding: 1.25rem 2rem;
+                font-size: 1.1rem;
+                color: var(--color-text, #2C2C2C);
+                transition: all 0.3s ease;
+                min-width: 44px;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .nav-links a:hover,
+            .nav-links a:focus {
+                background: rgba(123, 63, 191, 0.05);
+                color: var(--color-primary, #7B3FBF);
+                padding-left: 2.5rem;
+            }
+            
+            .nav-links a span {
+                display: inline; 
+            }
+
+            .nav-links::before {
+                content: '×';
+                position: absolute;
+                top: 1rem;
+                right: 1.5rem;
+                font-size: 2.5rem;
+                color: var(--color-text, #2C2C2C);
+                cursor: pointer;
+                width: 44px;
+                height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: color 0.3s ease;
+            }
+            
+            .nav-links::before:hover {
+                color: var(--color-primary, #7B3FBF);
+            }
+
+            .hero h1 {
+                font-size: 2.25rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .categories-grid,
+            .products-grid,
+            .usp-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .newsletter-form {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .newsletter-input,
+            .newsletter-button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) and (min-width: 481px) {
+            .products-grid,
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 1.35rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                right: -100%;
+            }
+
+            .hero {
+                padding: 3rem 1rem;
+            }
+            
+            .cta-button {
+                padding: 0.875rem 2rem;
+                font-size: 1rem;
+            }
+
+            .products-grid,
+            .categories-grid,
+            .usp-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+  
+
+    </style>
+</head>
+<body>
+    
+    <!-- ==================== HEADER / NAVBAR ==================== -->
+    <header class="header">
+        <nav class="nav-container">
+          <div class="logo">SmartNest</div>
+          <button class="mobile-menu-btn" aria-expanded="false">
+            <i data-lucide="menu"></i>
+          </button>
+        </nav>
+    </header>
+      
+    <!-- MOBILE MENU (TOP LAYER) -->
+    <ul class="nav-links">
+        <li><a href="index.html"><i data-lucide="home"></i>  Home</a></li>
+        <li><a href="plp.html"><i data-lucide="grid-3x3"></i>  Products</a></li>
+        <li><a href="cart.html"><i data-lucide="shopping-cart"></i>  Cart</a></li>
+        <li><a href="account.html"><i data-lucide="user"></i>  Account</a></li>
+    </ul>
+    
+    <!-- OVERLAY -->
+    <div class="mobile-overlay"></div>
+      
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Transform Your Home Into a Smart Sanctuary</h1>
+            <p>Experience seamless automation, enhanced security, and ultimate convenience with our premium smart home ecosystem</p>
+            <a href="plp.html" class="cta-button">
+                Explore Products
+                <i data-lucide="arrow-right" width="20" height="20"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- ==================== FEATURED CATEGORIES ==================== -->
+    <section class="categories-section">
+        <div class="section-header">
+            <h2>Shop by Category</h2>
+            <p>Discover our complete range of smart home solutions</p>
+        </div>
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon">
+                    <i data-lucide="utensils" width="40" height="40"></i>
+                </div>
+                <h3>Smart Kitchen</h3>
+                <p>Automated appliances and intelligent cooking solutions</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i data-lucide="lightbulb" width="40" height="40"></i>
+                </div>
+                <h3>Lighting</h3>
+                <p>Voice-controlled and ambient lighting systems</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i data-lucide="wind" width="40" height="40"></i>
+                </div>
+                <h3>Climate Control</h3>
+                <p>Smart fans, AC units, and thermostats</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i data-lucide="camera" width="40" height="40"></i>
+                </div>
+                <h3>Surveillance</h3>
+                <p>Advanced security cameras and monitoring</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i data-lucide="lock" width="40" height="40"></i>
+                </div>
+                <h3>Security</h3>
+                <p>Smart locks, alarms, and access control</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i data-lucide="speaker" width="40" height="40"></i>
+                </div>
+                <h3>Entertainment</h3>
+                <p>Smart speakers and home theater systems</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== BEST SELLERS ==================== -->
+    <section class="products-section">
+        <div class="products-container">
+            <div class="section-header">
+                <h2>Best Sellers</h2>
+                <p>Our most popular smart home devices</p>
+            </div>
+            <div class="products-grid">
+                <div class="product-card" >
+                    <span class="product-badge">Best Seller</span>
+                    <img src="https://images.unsplash.com/photo-1558089687-e460b9880b93?w=600&q=80" alt="Smart Switch" class="product-image">
+                    <div class="product-info">
+                        <h3>SmartTouch Switch Pro</h3>
+                        <p>Voice-controlled touch panel with scene automation</p>
+                        <div class="product-price">$89.99</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="product-badge">New Arrival</span>
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Smart Camera" class="product-image">
+                    <div class="product-info">
+                        <h3>SecureView 360 Camera</h3>
+                        <p>4K AI-powered surveillance with night vision</p>
+                        <div class="product-price">$149.99</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="product-badge">Popular</span>
+                    <img src="https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=600&q=80" alt="Smart Bulb" class="product-image">
+                    <div class="product-info">
+                        <h3>LumiGlow RGB Bulb</h3>
+                        <p>16 million colors with voice control compatibility</p>
+                        <div class="product-price">$24.99</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="product-badge">Best Seller</span>
+                    <img src="https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=600&q=80" alt="Smart Lock" class="product-image">
+                    <div class="product-info">
+                        <h3>SecureEntry Smart Lock</h3>
+                        <p>Fingerprint and keypad entry with remote access</p>
+                        <div class="product-price">$199.99</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== USP / TRUST SECTION ==================== -->
+    <section class="usp-section">
+        <div class="section-header">
+            <h2>Why Choose SmartNest?</h2>
+            <p>Your trusted partner in smart home innovation</p>
+        </div>
+        <div class="usp-grid">
+            <div class="usp-item">
+                <div class="usp-icon">
+                    <i data-lucide="truck" width="35" height="35"></i>
+                </div>
+                <h3>Free Shipping</h3>
+                <p>On all orders over $100 with fast delivery nationwide</p>
+            </div>
+            <div class="usp-item">
+                <div class="usp-icon">
+                    <i data-lucide="shield-check" width="35" height="35"></i>
+                </div>
+                <h3>Privacy First</h3>
+                <p>Bank-grade encryption and local data processing</p>
+            </div>
+            <div class="usp-item">
+                <div class="usp-icon">
+                    <i data-lucide="network" width="35" height="35"></i>
+                </div>
+                <h3>Ecosystem Ready</h3>
+                <p>Compatible with major smart home platforms</p>
+            </div>
+            <div class="usp-item">
+                <div class="usp-icon">
+                    <i data-lucide="headphones" width="35" height="35"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Expert assistance whenever you need it</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== NEWSLETTER ==================== -->
+    <section class="newsletter-section">
+        <div class="newsletter-content">
+            <h2>Stay Connected</h2>
+            <p>Get exclusive offers, smart home tips, and early access to new products</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>About SmartNest</h3>
+                    <p>Your premier destination for cutting-edge smart home technology. We bring innovation and convenience to every corner of your home.</p>
+                    <div class="social-icons">
+                        <div class="social-icon">
+                            <i data-lucide="facebook" width="20" height="20"></i>
+                        </div>
+                        <div class="social-icon">
+                            <i data-lucide="twitter" width="20" height="20"></i>
+                        </div>
+                        <div class="social-icon">
+                            <i data-lucide="instagram" width="20" height="20"></i>
+                        </div>
+                        <div class="social-icon">
+                            <i data-lucide="linkedin" width="20" height="20"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Products</h3>
+                    <ul>
+                        <li><a href="#">Smart Kitchen</a></li>
+                        <li><a href="#">Lighting</a></li>
+                        <li><a href="#">Climate Control</a></li>
+                        <li><a href="#">Surveillance</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Entertainment</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Installation Guide</a></li>
+                        <li><a href="#">Warranty Info</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SmartNest. All rights reserved. | Designed with care for your smart home journey.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        } else {
+            console.warn('Lucide icons library failed to load');
+        }
+
+        // Add to bottom of each HTML file
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make product cards clickable
+            document.querySelectorAll('.product-card').forEach(card => {
+                if (!card.hasAttribute('onclick')) {
+                    card.style.cursor = 'pointer';
+                    card.addEventListener('click', function(e) {
+                        if (!e.target.closest('button')) {
+                            window.location.href = 'pdp.html';
+                        }
+                    });
+                }
+            });
+            
+            // Cart icon navigation
+            document.querySelectorAll('.cart-icon, .cart-icon-wrapper').forEach(icon => {
+                icon.addEventListener('click', () => window.location.href = 'cart.html');
+            });
+        });
+
+            document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.querySelector(".mobile-menu-btn");
+            const navLinks = document.querySelector(".nav-links");
+            const overlay = document.querySelector(".mobile-overlay");
+            const body = document.body;
+            
+            if (!menuBtn || !navLinks || !overlay) return;
+            
+            // Toggle menu function
+            function toggleMenu() {
+            const isOpen = navLinks.classList.contains("active");
+            isOpen ? closeMenu() : openMenu();
+            }
+            
+            // Open menu
+            function openMenu() {
+                navLinks.classList.add("active");
+                overlay.classList.add("active");
+                document.body.style.overflow = "hidden";
+            }
+            
+            // Close menu
+            function closeMenu() {
+                navLinks.classList.remove("active");
+                overlay.classList.remove("active");
+                document.body.style.overflow = "";
+            }
+            
+            // Event listeners
+            menuBtn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', closeMenu);
+            
+            // Close menu when clicking on nav links
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            // Close button (the X in the drawer)
+            navLinks.addEventListener('click', function(e) {
+                if (e.target === navLinks && e.offsetX > navLinks.offsetWidth - 60) {
+                    closeMenu();
+                }
+            });
+            
+            // Close on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                    closeMenu();
+                }
+            });
+            
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+                        closeMenu();
+                    }
+                }, 250);
+            });
+        });
+    </script>
+    <script src="js/navigation.js"></script>
+    <script src="js/ui-interactions.js"></script>
+
+</body>
+</html>

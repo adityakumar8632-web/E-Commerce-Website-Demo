@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account | LuxHome</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(123, 63, 191, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-text);
+            transition: all 0.3s ease;
+            position: relative;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Page Header */
+        .page-header {
+            max-width: 1400px;
+            margin: 3rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .page-title {
+            font-size: clamp(2rem, 4vw + 1rem, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Account Layout */
+        .account-container {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar Navigation */
+        .account-sidebar {
+            background: var(--color-card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            box-shadow: 0 4px 20px rgba(123, 63, 191, 0.08);
+        }
+
+        .sidebar-nav {
+            /* display: flex; */
+            gap: 0.5rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 0.5rem;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            text-decoration: none;
+            color: var(--color-text);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            will-change: transform;
+        }
+
+        .sidebar-nav a:hover {
+            background: rgba(123, 63, 191, 0.1);
+            color: var(--color-primary);
+            transform: translateX(4px);
+        }
+
+        .sidebar-nav a.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .sidebar-nav a.active svg {
+            color: white;
+        }
+
+        /* Main Content */
+        .account-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(123, 63, 191, 0.05), rgba(199, 162, 255, 0.05));
+            border: 1px solid rgba(123, 63, 191, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(123, 63, 191, 0.15);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Section Card */
+        .section-card {
+            background: var(--color-card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(123, 63, 191, 0.08);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        /* Orders List */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .order-item {
+            background: white;
+            border: 1px solid rgba(123, 63, 191, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 2rem;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .order-item:hover {
+            transform: translateX(4px);
+        }
+
+        .order-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--color-text);
+        }
+
+        .order-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.delivered {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .status-badge.processing {
+            background: rgba(123, 63, 191, 0.1);
+            color: var(--color-primary);
+        }
+
+        .status-badge.cancelled {
+            background: rgba(107, 114, 128, 0.1);
+            color: #6b7280;
+        }
+
+        .view-btn {
+            padding: 0.625rem 1.25rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background: var(--color-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(123, 63, 191, 0.3);
+        }
+
+        /* Devices Grid */
+        .devices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+            gap: 1.5rem;
+        }
+
+        .device-card {
+            background: white;
+            border: 1px solid rgba(123, 63, 191, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .device-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .device-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .device-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .device-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .device-status {
+            color: #666;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .status-indicator.off {
+            background: #6b7280;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 26px;
+            background: #e5e7eb;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;        
+        }
+
+        .toggle-switch.on {
+            background: var(--color-primary);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 6px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.on::after {
+            transform: translateX(22px);
+        }
+
+        /* Profile Form */
+        .profile-form {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 600px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .form-group input {
+            padding: 0.875rem 1rem;
+            border: 2px solid rgba(123, 63, 191, 0.2);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            outline-offset: 2px;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(123, 63, 191, 0.1);
+        }
+
+        .icon-btn:focus-visible,
+        .view-btn:focus-visible,
+        .save-btn:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .save-btn {
+            padding: 1rem 2rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .save-btn:hover {
+            background: var(--color-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(123, 63, 191, 0.3);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(123, 63, 191, 0.1);
+            color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        .empty-state p {
+            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--color-accent), #4a1f70);
+            color: white;
+            padding: 3rem 2rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .view-btn:disabled,
+        .save-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            pointer-events: none;
+        }
+
+        .order-item,
+        .device-card {
+            position: relative;
+        }
+
+        .order-item::before,
+        .device-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            box-shadow: 0 8px 24px rgba(123, 63, 191, 0.15);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .order-item:hover::before,
+        .device-card:hover::before {
+            opacity: 1;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .device-icon,
+        .stat-icon {
+            aspect-ratio: 1;
+            object-fit: contain;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .account-container {
+                grid-template-columns: 1fr;
+            }
+
+            .account-sidebar {
+                position: static;
+                overflow-x: auto;
+            }
+
+            .sidebar-nav {
+                /* display: flex; */
+                gap: 0.5rem;
+            }
+
+            .sidebar-nav li {
+                margin-bottom: 0;
+            }
+
+            .sidebar-nav a {
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .order-item {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .devices-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 44px;
+                min-height: 44px;
+                background: none;
+                border: none;
+                color: var(--color-text);
+                cursor: pointer;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">SmartNest</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="plp.html">Products</a></li>
+                <li><a href="ecosystem.html">Ecosystem</a></li>
+                <li><a href="support.html">Support</a></li>
+            </ul>
+            <div class="nav-icons">
+                <button class="icon-btn" aria-label="Search">
+                    <i data-lucide="search" aria-hidden="true"></i>
+                </button>
+                <button class="icon-btn" aria-label="Shopping cart with 3 items">
+                    <i data-lucide="shopping-cart" aria-hidden="true"></i>
+                    <span class="cart-badge">3</span>
+                </button>
+                <button class="icon-btn" aria-label="User account">
+                    <i data-lucide="user" aria-hidden="true"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1 class="page-title">My Account</h1>
+        <p class="page-subtitle" id="welcome-text">Manage your profile, orders, and smart ecosystem</p>
+    </section>
+
+    <!-- Account Container -->
+    <div class="account-container">
+        <!-- Sidebar Navigation -->
+        <aside class="account-sidebar">
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="#dashboard" class="active">
+                        <i data-lucide="layout-dashboard"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#orders">
+                        <i data-lucide="package"></i>
+                        My Orders
+                    </a>
+                </li>
+                <li>
+                    <a href="#devices">
+                        <i data-lucide="home"></i>
+                        My Devices
+                    </a>
+                </li>
+                <li>
+                    <a href="wishlist.html">
+                        <i data-lucide="heart"></i>
+                        Wishlist
+                    </a>
+                </li>
+                <li>
+                    <a href="#settings">
+                        <i data-lucide="settings"></i>
+                        Profile Settings
+                    </a>
+                </li>
+                <li>
+                    <a href="#logout">
+                        <i data-lucide="log-out"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="account-content">
+            <!-- Dashboard Overview -->
+            <section id="dashboard">
+                <div class="dashboard-cards">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon">
+                                <i data-lucide="package"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon">
+                                <i data-lucide="home"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Active Devices</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon">
+                                <i data-lucide="heart"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Wishlist Items</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Orders -->
+            <section id="orders" class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Orders</h2>
+                </div>
+                <div class="orders-list">
+                    <div class="order-item">
+                        <div class="order-info">
+                            <h4>Order #LH-2024-4821</h4>
+                            <p>December 15, 2025 • 3 items • $2,497</p>
+                        </div>
+                        <span class="status-badge delivered" role="status" aria-label="Order status: Delivered">
+                            Delivered
+                        </span>
+                        <button class="view-btn" onclick="window.location.href='order-details.html'">View Details</button>
+                    </div>
+                    <div class="order-item">
+                        <div class="order-info">
+                            <h4>Order #LH-2024-4698</h4>
+                            <p>December 8, 2025 • 1 item • $899</p>
+                        </div>
+                        <span class="status-badge processing">Processing</span>
+                        <button class="view-btn" onclick="window.location.href='order-details.html'">View Details</button>
+                    </div>
+                    <div class="order-item">
+                        <div class="order-info">
+                            <h4>Order #LH-2024-4512</h4>
+                            <p>November 28, 2025 • 2 items • $1,648</p>
+                        </div>
+                        <span class="status-badge delivered">Delivered</span>
+                        <button class="view-btn" onclick="window.location.href='order-details.html'">View Details</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- My Smart Devices -->
+            <section id="devices" class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">My Smart Devices</h2>
+                </div>
+                <div class="devices-grid">
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <i data-lucide="lightbulb"></i>
+                            </div>
+                            <div class="toggle-switch on"></div>
+                        </div>
+                        <h3 class="device-name">Smart Lights</h3>
+                        <div class="device-status">
+                            <span class="status-indicator"></span>
+                            Online
+                        </div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <i data-lucide="refrigerator"></i>
+                            </div>
+                            <div class="toggle-switch on"></div>
+                        </div>
+                        <h3 class="device-name">Smart Refrigerator</h3>
+                        <div class="device-status">
+                            <span class="status-indicator"></span>
+                            Online
+                        </div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <i data-lucide="microwave"></i>
+                            </div>
+                            <div class="toggle-switch off"></div>
+                        </div>
+                        <h3 class="device-name">Smart Microwave</h3>
+                        <div class="device-status">
+                            <span class="status-indicator off"></span>
+                            Offline
+                        </div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <i data-lucide="shield-check"></i>
+                            </div>
+                            <div class="toggle-switch on"></div>
+                        </div>
+                        <h3 class="device-name">Smart Surveillance</h3>
+                        <div class="device-status">
+                            <span class="status-indicator"></span>
+                            Privacy Enabled
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Settings -->
+            <section id="settings" class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Profile Settings</h2>
+                </div>
+                <form class="profile-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" value="alex.johnson@example.com" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" value="••••••••••" />
+                    </div>
+                    <button type="button" class="save-btn">Save Changes</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>LuxHome</h3>
+                <p>Transforming homes with intelligent technology</p>
+                <div class="social-icons">
+                    <a href="#"><i data-lucide="facebook"></i></a>
+                    <a href="#"><i data-lucide="twitter"></i></a>
+                    <a href="#"><i data-lucide="instagram"></i></a>
+                    <a href="#"><i data-lucide="linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Products</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Smart Lighting</a></li>
+                    <li><a href="#">Kitchen Appliances</a></li>
+                    <li><a href="#">Security Systems</a></li>
+                    <li><a href="#">Climate Control</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Installation Guide</a></li>
+                    <li><a href="#">Warranty</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartNest. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/ui-interactions.js"></script>
+    <script src="js/account.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // MOCK AUTH GUARD — DEMO PURPOSE ONLY
+        const authData = localStorage.getItem("mockAuth");
+
+        if (!authData) {
+            // Not logged in → redirect
+            window.location.href = "auth.html";
+        } else {
+            const user = JSON.parse(authData);
+
+            // Show welcome text
+            const welcome = document.getElementById("welcome-text");
+            if (welcome) {
+            welcome.textContent = `Welcome, ${user.name}`;
+            }
+
+            // Fill profile name
+            const nameInput = document.getElementById("name");
+            if (nameInput) {
+            nameInput.value = user.name;
+            }
+        }
+
+        // Logout handler
+        const logoutLink = document.querySelector('a[href="#logout"]');
+        if (logoutLink) {
+            logoutLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            localStorage.removeItem("mockAuth");
+            window.location.href = "auth.html";
+            });
+        }
+
+        // Add to bottom of each HTML file
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make product cards clickable
+            document.querySelectorAll('.product-card').forEach(card => {
+                if (!card.hasAttribute('onclick')) {
+                    card.style.cursor = 'pointer';
+                    card.addEventListener('click', function(e) {
+                        if (!e.target.closest('button')) {
+                            window.location.href = 'pdp.html';
+                        }
+                    });
+                }
+            });
+            
+            // Cart icon navigation
+            document.querySelectorAll('.cart-icon, .cart-icon-wrapper').forEach(icon => {
+                icon.addEventListener('click', () => window.location.href = 'cart.html');
+            });
+        });
+
+    </script>
+</body>
+</html>
